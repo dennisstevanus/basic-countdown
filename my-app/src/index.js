@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './index.css';
 
+
 class Timer extends React.Component {
     constructor(props) {
         super(props);
@@ -18,24 +19,11 @@ class Timer extends React.Component {
     }
 
     tick() {
-        const currentDate = new Date();
-
-        if(this.state.timeLeft === 0) {
-            clearInterval(this.timerID);
-            this.setState(() => ({ date: null, isPlaying: false }))
-        }
-
-        switch (!this.state.date) {
-            case true:
-                this.setState({
-                    date: currentDate
-                });
-                break;
-            default:
-                this.setState((prevState, props) => ({
-                    date: currentDate,
-                    timeLeft: prevState.timeLeft - Math.round((currentDate - prevState.date) / 1000)
-                }));
+        const timeLeft = this.state.timeLeft;
+        if(timeLeft > 0) {
+            this.setState({
+                timeLeft: this.state.timeLeft - 1
+            });
         }
     }
 
@@ -53,13 +41,12 @@ class Timer extends React.Component {
         clearInterval(this.timerID);
             this.setState({
                 isPlaying: false,
-                date: null
             });
     }
 
     resetTimer() {
         clearInterval(this.timerID);
-        this.setState(() => ({ timeLeft: 0, isPlaying: false , time: 0, date: null}));
+        this.setState(() => ({ timeLeft: 0, isPlaying: false , time: 0}));
     }
 
     handleChange(event) {
@@ -71,14 +58,27 @@ class Timer extends React.Component {
         const isPlaying = this.state.isPlaying;
         return (
            <div>
-               <input type="number" name="time" value={this.state.time} onChange={this.handleChange.bind(this)}/>
+               <input type="number" name="time" value={this.state.time} onChange={this.handleChange.bind(this)} />
                <h1>{this.state.timeLeft}</h1>
-               <button onClick={isPlaying ? this.stopTimer : this.startTimer}>{isPlaying ? "Pause" : "Start"}</button>
-               <button onClick={this.resetTimer}>Reset</button>
+               <Start handleClick={isPlaying ? this.stopTimer : this.startTimer} handlePlaying={isPlaying} />
+               <Reset handleClick={this.resetTimer} />
             </div>
         );
     }
 }
+
+const Start = (props) => {
+    return (
+        <button onClick={props.handleClick}>{props.handlePlaying ? "Pause" : "Start"}</button>
+    )
+}
+
+const Reset = (props) => {
+    return (
+        <button onClick={props.handleClick}>Reset</button>
+    );
+} 
+
 
 ReactDOM.render(
     <Timer />,
