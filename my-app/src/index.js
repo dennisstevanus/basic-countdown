@@ -70,7 +70,7 @@ class Timer extends React.Component {
 const Start = (props) => {
     return (
         <button onClick={props.handleClick}>{props.handlePlaying ? "Pause" : "Start"}</button>
-    )
+    );
 }
 
 const Reset = (props) => {
