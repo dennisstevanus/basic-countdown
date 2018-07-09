@@ -24,6 +24,8 @@ class Timer extends React.Component {
             this.setState({
                 timeLeft: this.state.timeLeft - 1
             });
+        } else {
+            this.stopTimer();
         }
     }
 
